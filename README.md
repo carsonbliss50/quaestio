@@ -1,36 +1,96 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Quaestio
 
-## Getting Started
+A traditional Catholic AI chatbot grounded in the perennial Magisterium. Powered by the Magisterium API.
 
-First, run the development server:
+## Features
+
+- **Traditional Catholic Theology**: Answers rooted in pre-Vatican II sources
+- **Aquinas Mode**: Scholastic disputatio format (Videtur quod, Sed contra, Respondeo)
+- **Chat History**: Persistent conversations with real-time sync
+- **Dark/Light Mode**: Cathedral dark and warm parchment themes
+
+## Setup
+
+### 1. Install dependencies
+
+```bash
+npm install
+```
+
+### 2. Configure Convex
+
+Create a Convex project and deploy the schema:
+
+```bash
+npx convex dev
+```
+
+This will:
+- Create a Convex project (follow prompts)
+- Generate proper TypeScript types in `convex/_generated/`
+- Update `.env.local` with your Convex URL
+
+### 3. Set environment variables
+
+Edit `.env.local`:
+
+```bash
+# Convex (auto-filled by npx convex dev)
+NEXT_PUBLIC_CONVEX_URL=https://your-project.convex.cloud
+
+# Password for alpha access
+SITE_PASSWORD=your-password-here
+
+# Magisterium API key
+MAGISTERIUM_API_KEY=sk_your_key_here
+```
+
+### 4. Run development server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Tech Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Next.js 15** (App Router)
+- **shadcn/ui** + **Tailwind CSS**
+- **Convex** (real-time database)
+- **Vercel AI SDK** (streaming chat)
+- **Magisterium API** (Catholic knowledge base)
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+quaestio/
+├── app/
+│   ├── api/chat/       # Streaming chat endpoint
+│   ├── api/auth/       # Password authentication
+│   ├── chat/[id]/      # Conversation pages
+│   └── login/          # Password gate
+├── components/
+│   ├── chat/           # Chat UI components
+│   ├── sidebar/        # Conversation history
+│   └── ui/             # shadcn components
+├── convex/             # Database schema & queries
+├── hooks/              # React hooks
+└── lib/                # System prompts, utilities
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Deployment
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Deploy to Vercel:
 
-## Deploy on Vercel
+```bash
+vercel
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Set the same environment variables in your Vercel project settings.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Notes
+
+- Consult a priest for important matters of faith and morals
+- Daily message limit: 25 messages per user
+- Citations from traditional sources included in responses
