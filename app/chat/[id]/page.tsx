@@ -29,13 +29,13 @@ export default function ChatPage({ params }: ChatPageProps) {
       <AppLayout activeConversationId={conversationId}>
         <div className="flex flex-col h-full">
           <div className="flex items-center justify-between p-4 border-b border-border">
-            <Skeleton className="h-8 w-32" />
-            <Skeleton className="h-4 w-24" />
+            <Skeleton className="h-8 w-32 rounded-xl" />
+            <Skeleton className="h-4 w-24 rounded-lg" />
           </div>
           <div className="flex-1 p-4">
             <div className="max-w-3xl mx-auto space-y-4">
-              <Skeleton className="h-20 w-3/4 ml-auto rounded-lg" />
-              <Skeleton className="h-32 w-3/4 rounded-lg" />
+              <Skeleton className="h-20 w-3/4 ml-auto rounded-2xl" />
+              <Skeleton className="h-32 w-3/4 rounded-2xl" />
             </div>
           </div>
         </div>
@@ -47,14 +47,14 @@ export default function ChatPage({ params }: ChatPageProps) {
   if (conversation === null) {
     return (
       <AppLayout activeConversationId={null}>
-        <div className="flex flex-col items-center justify-center h-full">
-          <h2 className="text-xl font-serif mb-2">Conversation not found</h2>
-          <p className="text-muted-foreground mb-4">
+        <div className="flex flex-col items-center justify-center h-full p-8">
+          <h2 className="text-2xl font-display tracking-tight mb-3">Conversation not found</h2>
+          <p className="text-muted-foreground mb-6 font-serif italic">
             This conversation may have been deleted.
           </p>
           <button
             onClick={() => router.push("/")}
-            className="text-primary hover:underline"
+            className="text-primary hover:text-gold transition-colors underline underline-offset-4"
           >
             Start a new conversation
           </button>

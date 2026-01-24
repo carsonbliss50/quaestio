@@ -32,10 +32,10 @@ export function ConversationItem({
   return (
     <div
       className={cn(
-        "group flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer transition-colors",
+        "group flex items-center gap-2 px-3 py-2.5 rounded-xl cursor-pointer transition-all duration-200",
         isActive
-          ? "bg-accent text-accent-foreground"
-          : "hover:bg-muted"
+          ? "bg-accent text-accent-foreground shadow-sm"
+          : "hover:bg-muted/70 hover:translate-x-0.5"
       )}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}

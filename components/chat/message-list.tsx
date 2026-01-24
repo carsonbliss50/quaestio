@@ -34,11 +34,10 @@ export function MessageList({
   if (messages.length === 0 && !isLoading) {
     return (
       <div className="flex-1 flex items-center justify-center p-8">
-        <div className="text-center max-w-md">
-          <h2 className="text-2xl font-serif mb-2">Welcome to Quaestio</h2>
-          <p className="text-muted-foreground">
-            Ask any question about the Catholic Faith. I will answer from
-            traditional sources, grounded in the perennial Magisterium.
+        <div className="text-center max-w-md space-y-4">
+          <h2 className="text-3xl font-display tracking-tight">Ask a Question</h2>
+          <p className="text-muted-foreground font-serif italic text-lg">
+            Inquire about the Catholic Faith, and I shall answer from traditional sources, grounded in the perennial Magisterium.
           </p>
         </div>
       </div>

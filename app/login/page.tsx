@@ -73,13 +73,22 @@ function LoginFormSkeleton() {
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background p-4">
-      <Card className="w-full max-w-md">
-        <CardHeader className="text-center space-y-2">
-          <div className="mx-auto mb-4">
+    <div className="min-h-screen flex items-center justify-center bg-background p-4 relative overflow-hidden">
+      {/* Subtle dot grid background */}
+      <div
+        className="absolute inset-0 opacity-[0.03]"
+        style={{
+          backgroundImage: "radial-gradient(circle, currentColor 1px, transparent 1px)",
+          backgroundSize: "24px 24px"
+        }}
+      />
+
+      <Card className="w-full max-w-md relative z-10 border-2 shadow-lg hover:shadow-xl transition-shadow duration-300">
+        <CardHeader className="text-center space-y-4 pb-8">
+          <div className="mx-auto mb-2 animate-fade-in">
             <svg
               viewBox="0 0 100 100"
-              className="h-16 w-16 text-primary"
+              className="h-20 w-20 text-primary drop-shadow-sm"
               fill="currentColor"
             >
               <path d="M50 5 L95 30 L95 70 L50 95 L5 70 L5 30 Z" />
@@ -95,16 +104,18 @@ export default function LoginPage() {
               </text>
             </svg>
           </div>
-          <CardTitle className="text-2xl font-serif">Quaestio</CardTitle>
-          <p className="text-sm text-muted-foreground">
-            Traditional Catholic Theological Assistant
-          </p>
+          <div className="space-y-2 animate-slide-up">
+            <CardTitle className="text-3xl font-display tracking-tight">Quaestio</CardTitle>
+            <p className="text-base text-muted-foreground font-serif italic">
+              Traditional Catholic Theological Assistant
+            </p>
+          </div>
         </CardHeader>
-        <CardContent>
+        <CardContent className="pt-0">
           <Suspense fallback={<LoginFormSkeleton />}>
             <LoginForm />
           </Suspense>
-          <p className="mt-6 text-xs text-muted-foreground text-center">
+          <p className="mt-8 text-xs text-muted-foreground text-center font-serif italic">
             Private alpha access only
           </p>
         </CardContent>
