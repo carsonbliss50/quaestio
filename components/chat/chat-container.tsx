@@ -1,15 +1,26 @@
 "use client";
 
-import { useState, useCallback } from "react";
-import { useChat } from "ai/react";
+import { useState, useCallback, useRef } from "react";
+import { useChat } from "@ai-sdk/react";
+import { DefaultChatTransport } from "ai";
 import { useQuery, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { MessageList } from "./message-list";
 import { ChatInput } from "./chat-input";
 import { ModeSelector } from "./mode-selector";
+import { ShareButton } from "@/components/share/share-button";
 import { useUsage } from "@/hooks/use-usage";
 import { toast } from "sonner";
+import type { MagisteriumCitation } from "@/lib/magisterium";
+
+// Citation format for our schema
+interface Citation {
+  title: string;
+  source: string;
+  url?: string;
+  year?: string;
+}
 
 interface ChatContainerProps {
   conversationId: Id<"conversations">;
@@ -25,6 +36,9 @@ export function ChatContainer({
   const [mode, setMode] = useState(initialMode);
   const { usage, canSend, increment } = useUsage();
 
+  // Store pending citations received via onData
+  const pendingCitationsRef = useRef<Citation[]>([]);
+
   // Convex queries and mutations (use any cast for stub types)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const dbMessages = useQuery(api.messages.list as any, { conversationId });
@@ -34,27 +48,60 @@ export function ChatContainer({
   const addAssistantMessage = useMutation(api.messages.addAssistantMessage as any);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const updateTitle = useMutation(api.conversations.updateTitle as any);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const deleteLastAssistant = useMutation(api.messages.deleteLastAssistant as any);
 
-  // AI chat hook
+  // AI chat hook (v6 API)
   const {
     messages: aiMessages,
-    append,
-    isLoading,
+    sendMessage,
+    status,
     stop,
   } = useChat({
-    api: "/api/chat",
-    body: { mode },
-    onFinish: async (message) => {
-      // Save assistant message to database
+    transport: new DefaultChatTransport({
+      api: "/api/chat",
+      body: { mode },
+    }),
+    onData: (dataPart) => {
+      // Handle citations data from server
+      if (dataPart.type === "data-citations") {
+        const magCitations = (dataPart.data as { citations: MagisteriumCitation[] }).citations;
+        // Transform Magisterium format to our schema
+        pendingCitationsRef.current = magCitations.map((c) => ({
+          title: c.document_title ?? "Source",
+          source: c.cited_text,
+          url: c.source_url,
+          year: c.document_year ?? undefined,
+        }));
+      }
+    },
+    onFinish: async ({ message }) => {
+      // Extract text content from message parts
+      const textContent = message.parts
+        .filter((part): part is { type: "text"; text: string } => part.type === "text")
+        .map((part) => part.text)
+        .join("");
+
+      // Save assistant message to database with citations
+      const citations = pendingCitationsRef.current.length > 0
+        ? pendingCitationsRef.current
+        : undefined;
+
       await addAssistantMessage({
         conversationId,
-        content: message.content,
+        content: textContent,
+        citations,
       });
+
+      // Clear pending citations
+      pendingCitationsRef.current = [];
     },
     onError: (error) => {
       toast.error(error.message || "Failed to get response");
     },
   });
+
+  const isLoading = status === "streaming";
 
   // Handle mode change
   const handleModeChange = useCallback(
@@ -87,8 +134,8 @@ export function ChatContainer({
           await updateTitle({ id: conversationId, title });
         }
 
-        // Send to AI
-        await append({ role: "user", content });
+        // Send to AI (v6 API uses sendMessage with text)
+        sendMessage({ text: content });
       } catch (error) {
         toast.error("Failed to send message");
         console.error(error);
@@ -101,13 +148,43 @@ export function ChatContainer({
       increment,
       dbMessages,
       updateTitle,
-      append,
+      sendMessage,
     ]
   );
 
+  // Handle regeneration
+  const handleRegenerate = useCallback(async () => {
+    if (!canSend) {
+      toast.error("Daily message limit reached. Try again tomorrow.");
+      return;
+    }
+
+    if (!dbMessages || dbMessages.length === 0) return;
+
+    // Find the last user message
+    const lastUserMessage = [...dbMessages].reverse().find(
+      (m: { role: string }) => m.role === "user"
+    );
+    if (!lastUserMessage) return;
+
+    try {
+      // Delete the last assistant message from database
+      await deleteLastAssistant({ conversationId });
+
+      // Increment usage (regeneration counts against limit)
+      await increment();
+
+      // Resend the last user message
+      sendMessage({ text: lastUserMessage.content });
+    } catch (error) {
+      toast.error("Failed to regenerate response");
+      console.error(error);
+    }
+  }, [canSend, dbMessages, conversationId, deleteLastAssistant, increment, sendMessage]);
+
   // Combine database messages with streaming message
   const displayMessages =
-    dbMessages?.map((m: { _id: string; role: "user" | "assistant"; content: string; citations?: Array<{ title: string; source: string; url?: string }> }) => ({
+    dbMessages?.map((m: { _id: string; role: "user" | "assistant"; content: string; citations?: Citation[] }) => ({
       id: m._id,
       role: m.role,
       content: m.content,
@@ -116,10 +193,14 @@ export function ChatContainer({
 
   // Get streaming content from the last AI message if it's not yet saved
   const lastAiMessage = aiMessages[aiMessages.length - 1];
-  const streamingContent =
-    isLoading && lastAiMessage?.role === "assistant"
-      ? lastAiMessage.content
-      : undefined;
+  let streamingContent: string | undefined;
+  if (isLoading && lastAiMessage?.role === "assistant") {
+    // Extract text from parts (v6 API)
+    streamingContent = lastAiMessage.parts
+      .filter((part): part is { type: "text"; text: string } => part.type === "text")
+      .map((part) => part.text)
+      .join("");
+  }
 
   return (
     <div className="flex flex-col h-full">
@@ -130,11 +211,14 @@ export function ChatContainer({
           onModeChange={handleModeChange}
           disabled={isLoading}
         />
-        {usage && (
-          <div className="text-sm text-muted-foreground">
-            {usage.remaining}/{usage.limit} messages remaining
-          </div>
-        )}
+        <div className="flex items-center gap-3">
+          {usage && (
+            <div className="text-sm text-muted-foreground">
+              {usage.remaining}/{usage.limit} messages remaining
+            </div>
+          )}
+          <ShareButton conversationId={conversationId} />
+        </div>
       </div>
 
       {/* Messages */}
@@ -142,6 +226,7 @@ export function ChatContainer({
         messages={displayMessages}
         isLoading={isLoading}
         streamingContent={streamingContent}
+        onRegenerate={handleRegenerate}
       />
 
       {/* Input */}

@@ -96,3 +96,58 @@ export const touch = mutation({
     });
   },
 });
+
+// Generate a random share token
+function generateShareToken(): string {
+  const chars = "abcdefghijklmnopqrstuvwxyz0123456789";
+  let token = "";
+  for (let i = 0; i < 12; i++) {
+    token += chars[Math.floor(Math.random() * chars.length)];
+  }
+  return token;
+}
+
+// Toggle sharing for a conversation
+export const toggleShare = mutation({
+  args: { id: v.id("conversations") },
+  handler: async (ctx, args) => {
+    const conversation = await ctx.db.get(args.id);
+    if (!conversation) throw new Error("Conversation not found");
+
+    if (conversation.isPublic) {
+      // Unshare - remove token
+      await ctx.db.patch(args.id, {
+        isPublic: false,
+        shareToken: undefined,
+        updatedAt: Date.now(),
+      });
+      return null;
+    } else {
+      // Share - generate token
+      const token = generateShareToken();
+      await ctx.db.patch(args.id, {
+        isPublic: true,
+        shareToken: token,
+        updatedAt: Date.now(),
+      });
+      return token;
+    }
+  },
+});
+
+// Get a conversation by its share token (for public viewing)
+export const getByShareToken = query({
+  args: { token: v.string() },
+  handler: async (ctx, args) => {
+    const conversations = await ctx.db
+      .query("conversations")
+      .withIndex("by_share_token", (q) => q.eq("shareToken", args.token))
+      .take(1);
+
+    const conversation = conversations[0];
+    if (!conversation?.isPublic || conversation.isDeleted) {
+      return null;
+    }
+    return conversation;
+  },
+});

@@ -3,11 +3,15 @@
 import { cn } from "@/lib/utils";
 import { User, Triangle } from "lucide-react";
 import { CitationCard } from "./citation-card";
+import { MarkdownContent } from "./markdown-content";
+import { CopyButton } from "./copy-button";
+import { RegenerateButton } from "./regenerate-button";
 
 interface Citation {
   title: string;
   source: string;
   url?: string;
+  year?: string;
 }
 
 interface MessageItemProps {
@@ -15,6 +19,8 @@ interface MessageItemProps {
   content: string;
   citations?: Citation[];
   isStreaming?: boolean;
+  isLast?: boolean;
+  onRegenerate?: () => void;
 }
 
 export function MessageItem({
@@ -22,9 +28,11 @@ export function MessageItem({
   content,
   citations,
   isStreaming,
+  isLast,
+  onRegenerate,
 }: MessageItemProps) {
   return (
-    <div className="flex gap-4 w-full animate-fade-in py-4">
+    <div className="flex gap-4 w-full animate-fade-in py-4 group">
       {/* Avatar */}
       <div className="flex-shrink-0 w-8 h-8 rounded-full bg-muted flex items-center justify-center">
         {role === "user" ? (
@@ -36,20 +44,20 @@ export function MessageItem({
 
       {/* Content */}
       <div className="flex-1 min-w-0">
-        <div
-          className={cn(
-            "prose prose-sm max-w-none dark:prose-invert",
-            "prose-headings:font-semibold prose-headings:text-foreground",
-            "prose-p:text-foreground prose-p:leading-relaxed"
-          )}
-        >
+        {role === "user" ? (
+          // User messages render as plain text
           <div className="whitespace-pre-wrap leading-relaxed text-foreground">
             {content}
+          </div>
+        ) : (
+          // Assistant messages render with markdown
+          <div className="relative">
+            <MarkdownContent content={content} />
             {isStreaming && (
-              <span className="inline-block w-1.5 h-5 ml-1 bg-gold rounded-sm animate-blink" />
+              <span className="inline-block w-1.5 h-5 ml-1 bg-gold rounded-sm animate-blink align-middle" />
             )}
           </div>
-        </div>
+        )}
 
         {/* Citations */}
         {citations && citations.length > 0 && (
@@ -63,6 +71,16 @@ export function MessageItem({
           </div>
         )}
       </div>
+
+      {/* Actions for assistant messages */}
+      {role === "assistant" && (
+        <div className="flex-shrink-0 flex items-start gap-1 pt-1">
+          <CopyButton content={content} disabled={isStreaming} />
+          {isLast && onRegenerate && (
+            <RegenerateButton onRegenerate={onRegenerate} disabled={isStreaming} />
+          )}
+        </div>
+      )}
     </div>
   );
 }
