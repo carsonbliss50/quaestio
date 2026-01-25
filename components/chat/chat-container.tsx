@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
 import { useQuery, useMutation } from "convex/react";
@@ -11,6 +11,14 @@ import { ChatInput } from "./chat-input";
 import { ModeSelector } from "./mode-selector";
 import { useUsage } from "@/hooks/use-usage";
 import { toast } from "sonner";
+import type { MagisteriumCitation } from "@/lib/magisterium";
+
+// Citation format for our schema
+interface Citation {
+  title: string;
+  source: string;
+  url?: string;
+}
 
 interface ChatContainerProps {
   conversationId: Id<"conversations">;
@@ -25,6 +33,9 @@ export function ChatContainer({
 }: ChatContainerProps) {
   const [mode, setMode] = useState(initialMode);
   const { usage, canSend, increment } = useUsage();
+
+  // Store pending citations received via onData
+  const pendingCitationsRef = useRef<Citation[]>([]);
 
   // Convex queries and mutations (use any cast for stub types)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -47,6 +58,18 @@ export function ChatContainer({
       api: "/api/chat",
       body: { mode },
     }),
+    onData: (dataPart) => {
+      // Handle citations data from server
+      if (dataPart.type === "data-citations") {
+        const magCitations = (dataPart.data as { citations: MagisteriumCitation[] }).citations;
+        // Transform Magisterium format to our schema
+        pendingCitationsRef.current = magCitations.map((c) => ({
+          title: c.document_title ?? "Source",
+          source: c.cited_text,
+          url: c.source_url,
+        }));
+      }
+    },
     onFinish: async ({ message }) => {
       // Extract text content from message parts
       const textContent = message.parts
@@ -54,11 +77,19 @@ export function ChatContainer({
         .map((part) => part.text)
         .join("");
 
-      // Save assistant message to database
+      // Save assistant message to database with citations
+      const citations = pendingCitationsRef.current.length > 0
+        ? pendingCitationsRef.current
+        : undefined;
+
       await addAssistantMessage({
         conversationId,
         content: textContent,
+        citations,
       });
+
+      // Clear pending citations
+      pendingCitationsRef.current = [];
     },
     onError: (error) => {
       toast.error(error.message || "Failed to get response");
@@ -118,7 +149,7 @@ export function ChatContainer({
 
   // Combine database messages with streaming message
   const displayMessages =
-    dbMessages?.map((m: { _id: string; role: "user" | "assistant"; content: string; citations?: Array<{ title: string; source: string; url?: string }> }) => ({
+    dbMessages?.map((m: { _id: string; role: "user" | "assistant"; content: string; citations?: Citation[] }) => ({
       id: m._id,
       role: m.role,
       content: m.content,
