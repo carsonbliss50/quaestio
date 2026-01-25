@@ -23,7 +23,6 @@ export function MessageList({
   isLoading,
   streamingContent,
 }: MessageListProps) {
-  const scrollRef = useRef<HTMLDivElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
 
   // Auto-scroll to bottom when new messages arrive
@@ -45,8 +44,8 @@ export function MessageList({
   }
 
   return (
-    <ScrollArea className="flex-1 p-4" ref={scrollRef}>
-      <div className="max-w-3xl mx-auto space-y-4">
+    <ScrollArea className="flex-1 overflow-hidden">
+      <div className="max-w-3xl mx-auto space-y-4 p-4">
         {messages.map((message) => (
           <MessageItem
             key={message.id}

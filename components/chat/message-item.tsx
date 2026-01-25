@@ -3,6 +3,7 @@
 import { cn } from "@/lib/utils";
 import { User, Triangle } from "lucide-react";
 import { CitationCard } from "./citation-card";
+import { MarkdownContent } from "./markdown-content";
 
 interface Citation {
   title: string;
@@ -36,20 +37,20 @@ export function MessageItem({
 
       {/* Content */}
       <div className="flex-1 min-w-0">
-        <div
-          className={cn(
-            "prose prose-sm max-w-none dark:prose-invert",
-            "prose-headings:font-semibold prose-headings:text-foreground",
-            "prose-p:text-foreground prose-p:leading-relaxed"
-          )}
-        >
+        {role === "user" ? (
+          // User messages render as plain text
           <div className="whitespace-pre-wrap leading-relaxed text-foreground">
             {content}
+          </div>
+        ) : (
+          // Assistant messages render with markdown
+          <div className="relative">
+            <MarkdownContent content={content} />
             {isStreaming && (
-              <span className="inline-block w-1.5 h-5 ml-1 bg-gold rounded-sm animate-blink" />
+              <span className="inline-block w-1.5 h-5 ml-1 bg-gold rounded-sm animate-blink align-middle" />
             )}
           </div>
-        </div>
+        )}
 
         {/* Citations */}
         {citations && citations.length > 0 && (
