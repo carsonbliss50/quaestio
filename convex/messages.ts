@@ -6,6 +6,7 @@ const citationSchema = v.object({
   title: v.string(),
   source: v.string(),
   url: v.optional(v.string()),
+  year: v.optional(v.string()),
 });
 
 // Get all messages for a conversation
