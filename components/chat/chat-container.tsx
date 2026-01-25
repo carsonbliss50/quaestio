@@ -18,6 +18,7 @@ interface Citation {
   title: string;
   source: string;
   url?: string;
+  year?: string;
 }
 
 interface ChatContainerProps {
@@ -67,6 +68,7 @@ export function ChatContainer({
           title: c.document_title ?? "Source",
           source: c.cited_text,
           url: c.source_url,
+          year: c.document_year ?? undefined,
         }));
       }
     },

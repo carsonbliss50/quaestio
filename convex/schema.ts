@@ -24,6 +24,7 @@ export default defineSchema({
           title: v.string(),
           source: v.string(),
           url: v.optional(v.string()),
+          year: v.optional(v.string()),
         })
       )
     ),

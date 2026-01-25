@@ -9,6 +9,7 @@ interface Citation {
   title: string;
   source: string;
   url?: string;
+  year?: string;
 }
 
 interface MessageItemProps {
