@@ -5,6 +5,7 @@ import { User, Triangle } from "lucide-react";
 import { CitationCard } from "./citation-card";
 import { MarkdownContent } from "./markdown-content";
 import { CopyButton } from "./copy-button";
+import { RegenerateButton } from "./regenerate-button";
 
 interface Citation {
   title: string;
@@ -18,6 +19,8 @@ interface MessageItemProps {
   content: string;
   citations?: Citation[];
   isStreaming?: boolean;
+  isLast?: boolean;
+  onRegenerate?: () => void;
 }
 
 export function MessageItem({
@@ -25,6 +28,8 @@ export function MessageItem({
   content,
   citations,
   isStreaming,
+  isLast,
+  onRegenerate,
 }: MessageItemProps) {
   return (
     <div className="flex gap-4 w-full animate-fade-in py-4 group">
@@ -69,8 +74,11 @@ export function MessageItem({
 
       {/* Actions for assistant messages */}
       {role === "assistant" && (
-        <div className="flex-shrink-0 flex items-start pt-1">
+        <div className="flex-shrink-0 flex items-start gap-1 pt-1">
           <CopyButton content={content} disabled={isStreaming} />
+          {isLast && onRegenerate && (
+            <RegenerateButton onRegenerate={onRegenerate} disabled={isStreaming} />
+          )}
         </div>
       )}
     </div>

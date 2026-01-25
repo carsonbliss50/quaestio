@@ -101,3 +101,24 @@ export const count = query({
     return messages.length;
   },
 });
+
+// Delete the last assistant message (for regeneration)
+export const deleteLastAssistant = mutation({
+  args: { conversationId: v.id("conversations") },
+  handler: async (ctx, args) => {
+    const messages = await ctx.db
+      .query("messages")
+      .withIndex("by_conversation", (q) =>
+        q.eq("conversationId", args.conversationId)
+      )
+      .order("desc")
+      .take(1);
+
+    const lastMessage = messages[0];
+    if (lastMessage?.role === "assistant") {
+      await ctx.db.delete(lastMessage._id);
+      return lastMessage._id;
+    }
+    return null;
+  },
+});

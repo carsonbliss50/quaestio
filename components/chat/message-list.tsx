@@ -9,19 +9,21 @@ interface Message {
   id: string;
   role: "user" | "assistant";
   content: string;
-  citations?: Array<{ title: string; source: string; url?: string }>;
+  citations?: Array<{ title: string; source: string; url?: string; year?: string }>;
 }
 
 interface MessageListProps {
   messages: Message[];
   isLoading?: boolean;
   streamingContent?: string;
+  onRegenerate?: () => void;
 }
 
 export function MessageList({
   messages,
   isLoading,
   streamingContent,
+  onRegenerate,
 }: MessageListProps) {
   const bottomRef = useRef<HTMLDivElement>(null);
 
@@ -46,14 +48,22 @@ export function MessageList({
   return (
     <ScrollArea className="flex-1 overflow-hidden">
       <div className="max-w-3xl mx-auto space-y-4 p-4">
-        {messages.map((message) => (
-          <MessageItem
-            key={message.id}
-            role={message.role}
-            content={message.content}
-            citations={message.citations}
-          />
-        ))}
+        {messages.map((message, index) => {
+          const isLastAssistant =
+            message.role === "assistant" &&
+            index === messages.length - 1 &&
+            !streamingContent;
+          return (
+            <MessageItem
+              key={message.id}
+              role={message.role}
+              content={message.content}
+              citations={message.citations}
+              isLast={isLastAssistant}
+              onRegenerate={isLastAssistant ? onRegenerate : undefined}
+            />
+          );
+        })}
 
         {/* Streaming message */}
         {streamingContent && (

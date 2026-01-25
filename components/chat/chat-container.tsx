@@ -47,6 +47,8 @@ export function ChatContainer({
   const addAssistantMessage = useMutation(api.messages.addAssistantMessage as any);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const updateTitle = useMutation(api.conversations.updateTitle as any);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const deleteLastAssistant = useMutation(api.messages.deleteLastAssistant as any);
 
   // AI chat hook (v6 API)
   const {
@@ -149,6 +151,36 @@ export function ChatContainer({
     ]
   );
 
+  // Handle regeneration
+  const handleRegenerate = useCallback(async () => {
+    if (!canSend) {
+      toast.error("Daily message limit reached. Try again tomorrow.");
+      return;
+    }
+
+    if (!dbMessages || dbMessages.length === 0) return;
+
+    // Find the last user message
+    const lastUserMessage = [...dbMessages].reverse().find(
+      (m: { role: string }) => m.role === "user"
+    );
+    if (!lastUserMessage) return;
+
+    try {
+      // Delete the last assistant message from database
+      await deleteLastAssistant({ conversationId });
+
+      // Increment usage (regeneration counts against limit)
+      await increment();
+
+      // Resend the last user message
+      sendMessage({ text: lastUserMessage.content });
+    } catch (error) {
+      toast.error("Failed to regenerate response");
+      console.error(error);
+    }
+  }, [canSend, dbMessages, conversationId, deleteLastAssistant, increment, sendMessage]);
+
   // Combine database messages with streaming message
   const displayMessages =
     dbMessages?.map((m: { _id: string; role: "user" | "assistant"; content: string; citations?: Citation[] }) => ({
@@ -190,6 +222,7 @@ export function ChatContainer({
         messages={displayMessages}
         isLoading={isLoading}
         streamingContent={streamingContent}
+        onRegenerate={handleRegenerate}
       />
 
       {/* Input */}
