@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { User, Triangle } from "lucide-react";
 import { CitationCard } from "./citation-card";
 import { MarkdownContent } from "./markdown-content";
+import { CopyButton } from "./copy-button";
 
 interface Citation {
   title: string;
@@ -26,7 +27,7 @@ export function MessageItem({
   isStreaming,
 }: MessageItemProps) {
   return (
-    <div className="flex gap-4 w-full animate-fade-in py-4">
+    <div className="flex gap-4 w-full animate-fade-in py-4 group">
       {/* Avatar */}
       <div className="flex-shrink-0 w-8 h-8 rounded-full bg-muted flex items-center justify-center">
         {role === "user" ? (
@@ -65,6 +66,13 @@ export function MessageItem({
           </div>
         )}
       </div>
+
+      {/* Actions for assistant messages */}
+      {role === "assistant" && (
+        <div className="flex-shrink-0 flex items-start pt-1">
+          <CopyButton content={content} disabled={isStreaming} />
+        </div>
+      )}
     </div>
   );
 }
