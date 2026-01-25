@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { useChat } from "ai/react";
+import { useChat } from "@ai-sdk/react";
+import { DefaultChatTransport } from "ai";
 import { useQuery, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
@@ -35,26 +36,36 @@ export function ChatContainer({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const updateTitle = useMutation(api.conversations.updateTitle as any);
 
-  // AI chat hook
+  // AI chat hook (v6 API)
   const {
     messages: aiMessages,
-    append,
-    isLoading,
+    sendMessage,
+    status,
     stop,
   } = useChat({
-    api: "/api/chat",
-    body: { mode },
-    onFinish: async (message) => {
+    transport: new DefaultChatTransport({
+      api: "/api/chat",
+      body: { mode },
+    }),
+    onFinish: async ({ message }) => {
+      // Extract text content from message parts
+      const textContent = message.parts
+        .filter((part): part is { type: "text"; text: string } => part.type === "text")
+        .map((part) => part.text)
+        .join("");
+
       // Save assistant message to database
       await addAssistantMessage({
         conversationId,
-        content: message.content,
+        content: textContent,
       });
     },
     onError: (error) => {
       toast.error(error.message || "Failed to get response");
     },
   });
+
+  const isLoading = status === "streaming";
 
   // Handle mode change
   const handleModeChange = useCallback(
@@ -87,8 +98,8 @@ export function ChatContainer({
           await updateTitle({ id: conversationId, title });
         }
 
-        // Send to AI
-        await append({ role: "user", content });
+        // Send to AI (v6 API uses sendMessage with text)
+        sendMessage({ text: content });
       } catch (error) {
         toast.error("Failed to send message");
         console.error(error);
@@ -101,7 +112,7 @@ export function ChatContainer({
       increment,
       dbMessages,
       updateTitle,
-      append,
+      sendMessage,
     ]
   );
 
@@ -116,10 +127,14 @@ export function ChatContainer({
 
   // Get streaming content from the last AI message if it's not yet saved
   const lastAiMessage = aiMessages[aiMessages.length - 1];
-  const streamingContent =
-    isLoading && lastAiMessage?.role === "assistant"
-      ? lastAiMessage.content
-      : undefined;
+  let streamingContent: string | undefined;
+  if (isLoading && lastAiMessage?.role === "assistant") {
+    // Extract text from parts (v6 API)
+    streamingContent = lastAiMessage.parts
+      .filter((part): part is { type: "text"; text: string } => part.type === "text")
+      .map((part) => part.text)
+      .join("");
+  }
 
   return (
     <div className="flex flex-col h-full">

@@ -1,4 +1,4 @@
-import { streamText } from "ai";
+import { streamText, convertToModelMessages } from "ai";
 import { magisterium, MAGISTERIUM_MODEL } from "@/lib/magisterium";
 import { getSystemPrompt, type ChatMode } from "@/lib/system-prompts";
 
@@ -13,10 +13,10 @@ export async function POST(req: Request) {
     const result = streamText({
       model: magisterium(MAGISTERIUM_MODEL),
       system: systemPrompt,
-      messages,
+      messages: await convertToModelMessages(messages),
     });
 
-    return result.toDataStreamResponse();
+    return result.toUIMessageStreamResponse();
   } catch (error) {
     console.error("Chat API error:", error);
     return new Response(
