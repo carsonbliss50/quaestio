@@ -2,7 +2,8 @@
 title: "feat: Quaestio v2 Feature Set"
 type: feat
 date: 2026-01-24
-status: draft
+status: completed
+completed: 2026-01-24
 ---
 
 # Quaestio v2 Feature Set
@@ -774,31 +775,31 @@ export function middleware(request: NextRequest) {
 ### Functional Requirements
 
 #### Phase 1
-- [ ] Citations from Magisterium API are captured and persisted to Convex
-- [ ] Citations display with document icons, expand/collapse for long text
-- [ ] Markdown renders in assistant messages (headers, lists, bold, code, links)
-- [ ] User messages remain plain text
+- [x] Citations from Magisterium API are captured and persisted to Convex
+- [x] Citations display with document icons, expand/collapse for long text
+- [x] Markdown renders in assistant messages (headers, lists, bold, code, links)
+- [x] User messages remain plain text
 
 #### Phase 2
-- [ ] Copy button appears on hover for assistant messages
-- [ ] Copying includes message + "— via Quaestio" attribution
-- [ ] Regenerate button on last assistant message only
-- [ ] Regenerate counts against daily limit
-- [ ] Mobile sidebar auto-closes on navigation
-- [ ] Touch targets meet 44px minimum
+- [x] Copy button appears on hover for assistant messages
+- [x] Copying includes message + "— via Quaestio" attribution
+- [x] Regenerate button on last assistant message only
+- [x] Regenerate counts against daily limit
+- [x] Mobile sidebar auto-closes on navigation
+- [x] Touch targets meet 44px minimum
 
 #### Phase 3
-- [ ] Share button generates public link
-- [ ] Share link works without authentication
-- [ ] Unsharing immediately revokes access
-- [ ] Shared view is read-only
+- [x] Share button generates public link
+- [x] Share link works without authentication
+- [x] Unsharing immediately revokes access
+- [x] Shared view is read-only
 
 ### Non-Functional Requirements
 
-- [ ] No regressions to existing chat functionality
-- [ ] Streaming performance unchanged
-- [ ] Mobile layout works on iPhone SE (smallest common screen)
-- [ ] Works in Safari, Chrome, Firefox
+- [x] No regressions to existing chat functionality
+- [x] Streaming performance unchanged
+- [x] Mobile layout works on iPhone SE (smallest common screen)
+- [x] Works in Safari, Chrome, Firefox
 
 ---
 
@@ -941,6 +942,50 @@ When citing Church teaching:
 **Files to modify:**
 - `lib/system-prompts.ts` - Add traditional language directives
 - `components/chat/mode-selector.tsx` - (optional) Add "Traditional" mode option
+
+---
+
+### Task #13: User Messages on Right, Responses on Left
+
+**Goal:** Visual differentiation of user vs assistant messages through positioning.
+
+**Behavior:**
+- User messages align to the right side of the chat area
+- Assistant messages align to the left side
+- Creates clear visual conversation flow (like iMessage/WhatsApp)
+- Maintains existing styling (colors, avatars) but changes layout
+
+**Implementation:**
+- Update `message-item.tsx` to use flex with `justify-end` for user messages
+- Adjust max-width constraints so messages don't span full width
+- Consider bubble-style containers vs current full-width design
+
+**Files to modify:**
+- `components/chat/message-item.tsx`
+- `components/chat/message-list.tsx`
+
+---
+
+### Task #14: Keep Scroll at Top of Response During Streaming
+
+**Goal:** Don't auto-scroll to bottom while response is streaming; let user read from the beginning.
+
+**Current behavior:** Chat scrolls to keep the latest content visible as it streams in.
+
+**Desired behavior:**
+- When a new response starts streaming, scroll to show the beginning of the response
+- Stay anchored at that position while streaming continues
+- User can manually scroll if they want to see more
+- After streaming completes, don't force scroll position
+
+**Implementation:**
+- Track when streaming starts vs ongoing
+- On stream start: scroll to position the new message at top of viewport
+- During streaming: don't auto-scroll (unless user is already at bottom)
+- Use `scrollIntoView({ block: 'start' })` instead of `block: 'end'`
+
+**Files to modify:**
+- `components/chat/message-list.tsx` - Scroll behavior logic
 
 ---
 
