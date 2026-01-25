@@ -48,7 +48,7 @@ export function ChatInput({
   };
 
   return (
-    <div className="sticky bottom-0 bg-background p-4">
+    <div className="sticky bottom-0 bg-background p-4 safe-area-bottom">
       <div className="max-w-3xl mx-auto">
         <div className="flex gap-2 items-end bg-muted rounded-md p-2">
           <Textarea

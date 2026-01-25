@@ -32,7 +32,7 @@ export function ConversationItem({
   return (
     <div
       className={cn(
-        "group flex items-center gap-2 px-3 py-2.5 rounded-xl cursor-pointer transition-all duration-200",
+        "group flex items-center gap-2 px-3 py-3 rounded-xl cursor-pointer transition-all duration-200 min-h-[44px]",
         isActive
           ? "bg-accent text-accent-foreground shadow-sm"
           : "hover:bg-muted/70 hover:translate-x-0.5"
