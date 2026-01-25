@@ -6,15 +6,16 @@ export function middleware(request: NextRequest) {
   const isAuthenticated =
     request.cookies.get("quaestio-auth")?.value === "authenticated";
 
-  // Allow access to login page, API routes, and static assets
+  // Allow access to login page, API routes, share routes, and static assets
   const isLoginPage = request.nextUrl.pathname === "/login";
   const isApiRoute = request.nextUrl.pathname.startsWith("/api");
+  const isShareRoute = request.nextUrl.pathname.startsWith("/share");
   const isStaticAsset =
     request.nextUrl.pathname.startsWith("/_next") ||
     request.nextUrl.pathname.startsWith("/favicon") ||
     request.nextUrl.pathname.includes(".");
 
-  if (isLoginPage || isApiRoute || isStaticAsset) {
+  if (isLoginPage || isApiRoute || isShareRoute || isStaticAsset) {
     return NextResponse.next();
   }
 

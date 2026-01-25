@@ -10,9 +10,12 @@ export default defineSchema({
     createdAt: v.number(),
     updatedAt: v.number(),
     isDeleted: v.boolean(), // Soft delete
+    isPublic: v.optional(v.boolean()), // Whether conversation is shareable
+    shareToken: v.optional(v.string()), // Unique token for sharing
   })
     .index("by_session", ["sessionId"])
-    .index("by_session_updated", ["sessionId", "updatedAt"]),
+    .index("by_session_updated", ["sessionId", "updatedAt"])
+    .index("by_share_token", ["shareToken"]),
 
   messages: defineTable({
     conversationId: v.id("conversations"),

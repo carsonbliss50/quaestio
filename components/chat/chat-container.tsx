@@ -9,6 +9,7 @@ import { Id } from "@/convex/_generated/dataModel";
 import { MessageList } from "./message-list";
 import { ChatInput } from "./chat-input";
 import { ModeSelector } from "./mode-selector";
+import { ShareButton } from "@/components/share/share-button";
 import { useUsage } from "@/hooks/use-usage";
 import { toast } from "sonner";
 import type { MagisteriumCitation } from "@/lib/magisterium";
@@ -210,11 +211,14 @@ export function ChatContainer({
           onModeChange={handleModeChange}
           disabled={isLoading}
         />
-        {usage && (
-          <div className="text-sm text-muted-foreground">
-            {usage.remaining}/{usage.limit} messages remaining
-          </div>
-        )}
+        <div className="flex items-center gap-3">
+          {usage && (
+            <div className="text-sm text-muted-foreground">
+              {usage.remaining}/{usage.limit} messages remaining
+            </div>
+          )}
+          <ShareButton conversationId={conversationId} />
+        </div>
       </div>
 
       {/* Messages */}
