@@ -61,9 +61,9 @@ export function ConversationList({
 
   if (isLoading) {
     return (
-      <div className="space-y-2 p-2">
+      <div className="space-y-2 p-4">
         {[...Array(5)].map((_, i) => (
-          <Skeleton key={i} className="h-10 w-full rounded-lg" />
+          <Skeleton key={i} className="h-12 w-full rounded-xl" />
         ))}
       </div>
     );
@@ -71,19 +71,21 @@ export function ConversationList({
 
   if (!conversations || conversations.length === 0) {
     return (
-      <div className="p-4 text-center text-sm text-muted-foreground">
-        No conversations yet
+      <div className="p-6 text-center">
+        <p className="text-sm text-muted-foreground font-body italic">
+          No conversations yet
+        </p>
       </div>
     );
   }
 
   return (
-    <div className="space-y-4 p-2">
+    <div className="space-y-6 p-4">
       {Object.entries(groups).map(
         ([label, convos]) =>
           convos.length > 0 && (
             <div key={label}>
-              <h3 className="px-3 py-1 text-xs font-medium text-muted-foreground uppercase tracking-wide">
+              <h3 className="text-label text-muted-foreground px-4 pb-2">
                 {label}
               </h3>
               <div className="space-y-1">

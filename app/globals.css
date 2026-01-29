@@ -3,16 +3,25 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* Quaestio Theme - Traditional Catholic aesthetic */
+/* Quaestio Premium Theme - Refined Catholic aesthetic */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-inter);
-  --font-serif: var(--font-crimson);
-  --font-mono: var(--font-geist-mono);
-  --font-display: var(--font-stk-bureau);
+
+  /* Font families */
+  --font-display: var(--font-display);
+  --font-serif: var(--font-serif);
+  --font-body: var(--font-body);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+
+  /* Gold accent */
   --color-gold: var(--gold);
+  --color-gold-light: var(--gold-light);
+  --color-gold-subtle: var(--gold-subtle);
   --color-gold-foreground: var(--gold-foreground);
+
+  /* Sidebar */
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -21,14 +30,19 @@
   --color-sidebar-primary: var(--sidebar-primary);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar: var(--sidebar);
+
+  /* Charts */
   --color-chart-5: var(--chart-5);
   --color-chart-4: var(--chart-4);
   --color-chart-3: var(--chart-3);
   --color-chart-2: var(--chart-2);
   --color-chart-1: var(--chart-1);
+
+  /* Core colors */
   --color-ring: var(--ring);
   --color-input: var(--input);
   --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
   --color-destructive: var(--destructive);
   --color-accent-foreground: var(--accent-foreground);
   --color-accent: var(--accent);
@@ -42,6 +56,17 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
+  --color-card-shadow: var(--card-shadow);
+
+  /* Background variants */
+  --color-background-subtle: var(--background-subtle);
+  --color-background-muted: var(--background-muted);
+
+  /* Foreground variants */
+  --color-foreground-muted: var(--foreground-muted);
+  --color-foreground-subtle: var(--foreground-subtle);
+
+  /* Border radius */
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -51,174 +76,409 @@
   --radius-4xl: calc(var(--radius) + 16px);
 }
 
-/* Light theme: Clean Magisterium style */
+/* ============================================
+   Light Theme - Premium black/white palette
+   ============================================ */
 :root {
-  --radius: 0.375rem; /* 6px */
+  --radius: 0.5rem; /* 8px base */
 
-  /* Gold accent - user specified */
-  --gold: #cbaa37;
-  --gold-foreground: #18181b;
+  /* Backgrounds */
+  --background: #FFFFFF;
+  --background-subtle: #FAFAFA;
+  --background-muted: #F5F5F5;
 
-  /* Spacing tokens */
-  --spacing-section: 6rem;
-  --spacing-block: 3rem;
+  /* Foregrounds */
+  --foreground: #0A0A0A;
+  --foreground-muted: #525252;
+  --foreground-subtle: #737373;
 
-  /* Clean white background */
-  --background: #ffffff;
-  --foreground: #18181b; /* zinc-900 */
+  /* Gold Accent (used sparingly) */
+  --gold: #B8972F;
+  --gold-light: #D4B84A;
+  --gold-subtle: rgba(184, 151, 47, 0.1);
+  --gold-foreground: #0A0A0A;
 
-  --card: #ffffff;
-  --card-foreground: #18181b;
+  /* Borders & Dividers */
+  --border: #E5E5E5;
+  --border-strong: #D4D4D4;
 
-  --popover: #ffffff;
-  --popover-foreground: #18181b;
+  /* Cards & Surfaces */
+  --card: #FFFFFF;
+  --card-foreground: #0A0A0A;
+  --card-shadow: rgba(0, 0, 0, 0.04);
 
-  /* Dark primary for buttons */
-  --primary: #18181b;
-  --primary-foreground: #ffffff;
+  /* Popover */
+  --popover: #FFFFFF;
+  --popover-foreground: #0A0A0A;
 
-  --secondary: #f4f4f5; /* zinc-100 */
-  --secondary-foreground: #18181b;
+  /* Interactive States */
+  --primary: #0A0A0A;
+  --primary-foreground: #FFFFFF;
+  --secondary: #F5F5F5;
+  --secondary-foreground: #0A0A0A;
 
-  --muted: #f4f4f5; /* zinc-100 */
-  --muted-foreground: #71717a; /* zinc-500 */
+  /* Muted */
+  --muted: #F5F5F5;
+  --muted-foreground: #525252;
 
-  --accent: #f4f4f5;
-  --accent-foreground: #18181b;
+  /* Accent */
+  --accent: #F5F5F5;
+  --accent-foreground: #0A0A0A;
 
-  --destructive: #ef4444;
+  /* Destructive */
+  --destructive: #DC2626;
 
-  --border: #e4e4e7; /* zinc-200 */
-  --input: #f4f4f5; /* zinc-100 for input backgrounds */
-  --ring: #cbaa37; /* Gold focus ring */
+  /* Input */
+  --input: #F5F5F5;
 
-  /* Charts */
-  --chart-1: #18181b;
-  --chart-2: #cbaa37;
-  --chart-3: #22c55e;
-  --chart-4: #3b82f6;
-  --chart-5: #ef4444;
-
-  /* Sidebar - clean white */
-  --sidebar: #ffffff;
-  --sidebar-foreground: #18181b;
-  --sidebar-primary: #18181b;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #f4f4f5;
-  --sidebar-accent-foreground: #18181b;
-  --sidebar-border: #e4e4e7;
-  --sidebar-ring: #cbaa37;
-}
-
-/* Dark theme: Zinc-based */
-.dark {
-  /* Gold in dark mode */
-  --gold: #d4b84a;
-  --gold-foreground: #09090b;
-
-  /* Deep dark background */
-  --background: #09090b; /* zinc-950 */
-  --foreground: #fafafa; /* zinc-50 */
-
-  --card: #18181b; /* zinc-900 */
-  --card-foreground: #fafafa;
-
-  --popover: #18181b;
-  --popover-foreground: #fafafa;
-
-  /* Light primary in dark mode */
-  --primary: #fafafa;
-  --primary-foreground: #18181b;
-
-  --secondary: #27272a; /* zinc-800 */
-  --secondary-foreground: #fafafa;
-
-  --muted: #27272a;
-  --muted-foreground: #a1a1aa; /* zinc-400 */
-
-  --accent: #27272a;
-  --accent-foreground: #fafafa;
-
-  --destructive: #ef4444;
-
-  --border: #27272a; /* zinc-800 */
-  --input: #27272a;
-  --ring: #d4b84a; /* Gold */
+  /* Focus Ring */
+  --ring: #B8972F;
 
   /* Charts */
-  --chart-1: #fafafa;
-  --chart-2: #d4b84a;
+  --chart-1: #0A0A0A;
+  --chart-2: #B8972F;
   --chart-3: #22c55e;
   --chart-4: #3b82f6;
-  --chart-5: #ef4444;
+  --chart-5: #DC2626;
 
   /* Sidebar */
-  --sidebar: #09090b;
-  --sidebar-foreground: #fafafa;
-  --sidebar-primary: #fafafa;
-  --sidebar-primary-foreground: #18181b;
-  --sidebar-accent: #27272a;
-  --sidebar-accent-foreground: #fafafa;
-  --sidebar-border: #27272a;
-  --sidebar-ring: #d4b84a;
+  --sidebar: #FFFFFF;
+  --sidebar-foreground: #0A0A0A;
+  --sidebar-primary: #0A0A0A;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #F5F5F5;
+  --sidebar-accent-foreground: #0A0A0A;
+  --sidebar-border: #E5E5E5;
+  --sidebar-ring: #B8972F;
+
+  /* Spacing tokens */
+  --spacing-card-padding: 2rem;
+  --spacing-section: 6rem;
+  --spacing-block: 4rem;
+  --spacing-inline: 1rem;
+  --spacing-stack: 1.5rem;
+
+  /* Animation tokens */
+  --duration-fast: 150ms;
+  --duration-normal: 200ms;
+  --duration-slow: 300ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --scale-hover: 1.02;
+  --scale-active: 0.98;
 }
 
+/* ============================================
+   Dark Theme - Deep, rich blacks
+   ============================================ */
+.dark {
+  /* Backgrounds - Deep, rich blacks */
+  --background: #0A0A0A;
+  --background-subtle: #141414;
+  --background-muted: #1A1A1A;
+
+  /* Foregrounds - Warm whites */
+  --foreground: #FAFAF9;
+  --foreground-muted: #A8A29E;
+  --foreground-subtle: #78716C;
+
+  /* Gold Accent */
+  --gold: #D4B84A;
+  --gold-light: #E8CC5E;
+  --gold-subtle: rgba(212, 184, 74, 0.12);
+  --gold-foreground: #0A0A0A;
+
+  /* Borders */
+  --border: #262626;
+  --border-strong: #404040;
+
+  /* Cards */
+  --card: #141414;
+  --card-foreground: #FAFAF9;
+  --card-shadow: rgba(0, 0, 0, 0.3);
+
+  /* Popover */
+  --popover: #141414;
+  --popover-foreground: #FAFAF9;
+
+  /* Interactive */
+  --primary: #FAFAF9;
+  --primary-foreground: #0A0A0A;
+  --secondary: #262626;
+  --secondary-foreground: #FAFAF9;
+
+  /* Muted */
+  --muted: #262626;
+  --muted-foreground: #A8A29E;
+
+  /* Accent */
+  --accent: #262626;
+  --accent-foreground: #FAFAF9;
+
+  /* Destructive */
+  --destructive: #DC2626;
+
+  /* Input */
+  --input: #262626;
+
+  /* Focus Ring */
+  --ring: #D4B84A;
+
+  /* Charts */
+  --chart-1: #FAFAF9;
+  --chart-2: #D4B84A;
+  --chart-3: #22c55e;
+  --chart-4: #3b82f6;
+  --chart-5: #DC2626;
+
+  /* Sidebar */
+  --sidebar: #0A0A0A;
+  --sidebar-foreground: #FAFAF9;
+  --sidebar-primary: #FAFAF9;
+  --sidebar-primary-foreground: #0A0A0A;
+  --sidebar-accent: #262626;
+  --sidebar-accent-foreground: #FAFAF9;
+  --sidebar-border: #262626;
+  --sidebar-ring: #D4B84A;
+}
+
+/* ============================================
+   Base Layer - Typography & Defaults
+   ============================================ */
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-body), var(--font-serif), Georgia, serif;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
-  h1, h2 {
-    font-family: var(--font-display), var(--font-serif), serif;
+
+  /* Display headings - Cormorant Garamond */
+  h1 {
+    font-family: var(--font-display), var(--font-serif), Georgia, serif;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    line-height: 1.2;
   }
-  h3, h4, h5, h6 {
-    font-family: var(--font-serif), serif;
+
+  h2 {
+    font-family: var(--font-display), var(--font-serif), Georgia, serif;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    line-height: 1.25;
+  }
+
+  /* Secondary headings - Cormorant */
+  h3 {
+    font-family: var(--font-serif), Georgia, serif;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  h4, h5, h6 {
+    font-family: var(--font-serif), Georgia, serif;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+  /* Body text - Source Serif 4 */
+  p, li, blockquote {
+    font-family: var(--font-body), var(--font-serif), Georgia, serif;
+    line-height: 1.7;
+  }
+
+  /* UI elements - Inter */
+  button, input, select, textarea, label {
+    font-family: var(--font-sans), system-ui, sans-serif;
+  }
+
+  /* Monospace - JetBrains Mono */
+  code, pre, kbd, samp {
+    font-family: var(--font-mono), ui-monospace, monospace;
   }
 }
 
-/* Custom scrollbar for the traditional feel */
+/* ============================================
+   Typography Utilities
+   ============================================ */
+@layer utilities {
+  /* Font families */
+  .font-display {
+    font-family: var(--font-display), var(--font-serif), Georgia, serif;
+  }
+
+  .font-serif {
+    font-family: var(--font-serif), Georgia, serif;
+  }
+
+  .font-body {
+    font-family: var(--font-body), var(--font-serif), Georgia, serif;
+  }
+
+  .font-sans {
+    font-family: var(--font-sans), system-ui, sans-serif;
+  }
+
+  .font-mono {
+    font-family: var(--font-mono), ui-monospace, monospace;
+  }
+
+  /* Typography scale */
+  .text-display {
+    font-family: var(--font-display), var(--font-serif), Georgia, serif;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    line-height: 1.1;
+  }
+
+  .text-heading {
+    font-family: var(--font-display), var(--font-serif), Georgia, serif;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    line-height: 1.25;
+  }
+
+  .text-subheading {
+    font-family: var(--font-serif), Georgia, serif;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+  .text-body {
+    font-family: var(--font-body), var(--font-serif), Georgia, serif;
+    font-weight: 400;
+    line-height: 1.7;
+  }
+
+  .text-ui {
+    font-family: var(--font-sans), system-ui, sans-serif;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    line-height: 1.5;
+  }
+
+  .text-label {
+    font-family: var(--font-sans), system-ui, sans-serif;
+    font-weight: 600;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    line-height: 1.4;
+    text-transform: uppercase;
+  }
+
+  .text-button {
+    font-family: var(--font-sans), system-ui, sans-serif;
+    font-weight: 600;
+    font-size: 0.875rem;
+    letter-spacing: 0.02em;
+    line-height: 1;
+  }
+}
+
+/* ============================================
+   Spacing Utilities
+   ============================================ */
+@layer utilities {
+  .p-card {
+    padding: var(--spacing-card-padding);
+  }
+
+  .space-section {
+    margin-top: var(--spacing-section);
+    margin-bottom: var(--spacing-section);
+  }
+
+  .space-block {
+    margin-top: var(--spacing-block);
+    margin-bottom: var(--spacing-block);
+  }
+
+  .gap-stack {
+    gap: var(--spacing-stack);
+  }
+
+  .gap-inline {
+    gap: var(--spacing-inline);
+  }
+}
+
+/* ============================================
+   Scrollbar Styling
+   ============================================ */
 @layer utilities {
   .scrollbar-thin {
     scrollbar-width: thin;
     scrollbar-color: var(--muted) transparent;
   }
+
   .scrollbar-thin::-webkit-scrollbar {
     width: 6px;
+    height: 6px;
   }
+
   .scrollbar-thin::-webkit-scrollbar-track {
     background: transparent;
   }
+
   .scrollbar-thin::-webkit-scrollbar-thumb {
     background-color: var(--muted);
     border-radius: 3px;
+    transition: background-color var(--duration-normal) var(--ease-out);
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background-color: var(--gold);
+  }
+
+  .scrollbar-none {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
   }
 }
 
-/* Safe area insets for mobile devices */
+/* ============================================
+   Safe Area Insets (Mobile)
+   ============================================ */
 @layer utilities {
   .safe-area-bottom {
     padding-bottom: env(safe-area-inset-bottom, 0);
   }
+
   .safe-area-top {
     padding-top: env(safe-area-inset-top, 0);
   }
+
   .safe-area-left {
     padding-left: env(safe-area-inset-left, 0);
   }
+
   .safe-area-right {
     padding-right: env(safe-area-inset-right, 0);
   }
 }
 
-/* Animations */
+/* ============================================
+   Animation Keyframes
+   ============================================ */
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
-@keyframes slideUp {
+@keyframes fadeInUp {
   from {
     opacity: 0;
     transform: translateY(10px);
@@ -229,27 +489,259 @@
   }
 }
 
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 @keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
 }
 
 @keyframes blink {
-  0%, 50% { opacity: 1; }
-  51%, 100% { opacity: 0; }
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0;
+  }
 }
 
+@keyframes pulse-gold {
+  0%, 100% {
+    box-shadow: 0 0 0 0 var(--gold-subtle);
+  }
+  50% {
+    box-shadow: 0 0 0 4px var(--gold-subtle);
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ============================================
+   Animation Utilities
+   ============================================ */
 @layer utilities {
   .animate-fade-in {
-    animation: fadeIn 0.3s ease-out forwards;
+    animation: fadeIn var(--duration-slow) var(--ease-out) forwards;
   }
+
+  .animate-fade-in-up {
+    animation: fadeInUp var(--duration-slow) var(--ease-out) forwards;
+  }
+
   .animate-slide-up {
-    animation: slideUp 0.4s ease-out forwards;
+    animation: slideUp 400ms var(--ease-out) forwards;
   }
+
+  .animate-slide-down {
+    animation: slideDown var(--duration-slow) var(--ease-out) forwards;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn var(--duration-normal) var(--ease-out) forwards;
+  }
+
   .animate-shimmer {
-    animation: shimmer 2s infinite linear;
+    animation: shimmer 1.5s ease-in-out infinite;
+    background: linear-gradient(
+      90deg,
+      var(--muted) 0%,
+      var(--background-subtle) 50%,
+      var(--muted) 100%
+    );
+    background-size: 200% 100%;
   }
+
   .animate-blink {
     animation: blink 1s infinite;
+  }
+
+  .animate-pulse-gold {
+    animation: pulse-gold 2s infinite;
+  }
+
+  .animate-spin {
+    animation: spin 1s linear infinite;
+  }
+
+  /* Animation delays for staggered effects */
+  .animation-delay-100 {
+    animation-delay: 100ms;
+  }
+
+  .animation-delay-200 {
+    animation-delay: 200ms;
+  }
+
+  .animation-delay-300 {
+    animation-delay: 300ms;
+  }
+
+  .animation-delay-400 {
+    animation-delay: 400ms;
+  }
+
+  .animation-delay-500 {
+    animation-delay: 500ms;
+  }
+}
+
+/* ============================================
+   Transition Utilities
+   ============================================ */
+@layer utilities {
+  .transition-fast {
+    transition-duration: var(--duration-fast);
+    transition-timing-function: var(--ease-out);
+  }
+
+  .transition-normal {
+    transition-duration: var(--duration-normal);
+    transition-timing-function: var(--ease-out);
+  }
+
+  .transition-slow {
+    transition-duration: var(--duration-slow);
+    transition-timing-function: var(--ease-out);
+  }
+
+  .hover-scale {
+    transition: transform var(--duration-fast) var(--ease-out);
+  }
+
+  .hover-scale:hover {
+    transform: scale(var(--scale-hover));
+  }
+
+  .hover-scale:active {
+    transform: scale(var(--scale-active));
+  }
+
+  .hover-lift {
+    transition: transform var(--duration-normal) var(--ease-out),
+                box-shadow var(--duration-normal) var(--ease-out);
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px -5px var(--card-shadow);
+  }
+}
+
+/* ============================================
+   Gold Accent Utilities
+   ============================================ */
+@layer utilities {
+  .text-gold {
+    color: var(--gold);
+  }
+
+  .bg-gold {
+    background-color: var(--gold);
+  }
+
+  .bg-gold-subtle {
+    background-color: var(--gold-subtle);
+  }
+
+  .border-gold {
+    border-color: var(--gold);
+  }
+
+  .ring-gold {
+    --tw-ring-color: var(--gold);
+  }
+
+  /* Gold streaming cursor */
+  .streaming-cursor {
+    display: inline-block;
+    width: 2px;
+    height: 1em;
+    background-color: var(--gold);
+    margin-left: 2px;
+    animation: blink 1s infinite;
+    vertical-align: text-bottom;
+  }
+}
+
+/* ============================================
+   Premium Card Styles
+   ============================================ */
+@layer utilities {
+  .card-elevated {
+    background-color: var(--card);
+    border-radius: 1rem;
+    box-shadow: 0 1px 3px 0 var(--card-shadow),
+                0 1px 2px -1px var(--card-shadow);
+    transition: box-shadow var(--duration-normal) var(--ease-out),
+                transform var(--duration-normal) var(--ease-out);
+  }
+
+  .card-elevated:hover {
+    box-shadow: 0 10px 25px -5px var(--card-shadow),
+                0 8px 10px -6px var(--card-shadow);
+    transform: translateY(-1px);
+  }
+
+  .card-subtle {
+    background-color: var(--background-subtle);
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+  }
+}
+
+/* ============================================
+   Focus Ring Styles
+   ============================================ */
+@layer utilities {
+  .focus-ring {
+    outline: none;
+  }
+
+  .focus-ring:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--background),
+                0 0 0 4px var(--ring);
   }
 }

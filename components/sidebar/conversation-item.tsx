@@ -32,24 +32,24 @@ export function ConversationItem({
   return (
     <div
       className={cn(
-        "group flex items-center gap-2 px-3 py-3 rounded-xl cursor-pointer transition-all duration-200 min-h-[44px]",
+        "group flex items-center gap-2 px-4 py-4 rounded-xl cursor-pointer transition-all duration-200 min-h-[48px]",
         isActive
-          ? "bg-accent text-accent-foreground shadow-sm"
-          : "hover:bg-muted/70 hover:translate-x-0.5"
+          ? "bg-accent text-accent-foreground shadow-sm border-l-3 border-gold"
+          : "hover:bg-muted/70 hover:scale-[1.01]"
       )}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={() => router.push(`/chat/${id}`)}
     >
-      <span className="flex-1 truncate text-sm">{title}</span>
+      <span className="flex-1 truncate text-sm font-medium">{title}</span>
 
       {(isHovered || isActive) && (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
               variant="ghost"
-              size="icon"
-              className="h-6 w-6 opacity-0 group-hover:opacity-100"
+              size="icon-xs"
+              className="h-7 w-7 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-150"
               onClick={(e) => e.stopPropagation()}
             >
               <MoreHorizontal className="h-4 w-4" />

@@ -50,7 +50,7 @@ export function ChatInput({
   return (
     <div className="sticky bottom-0 bg-background p-4 safe-area-bottom">
       <div className="max-w-3xl mx-auto">
-        <div className="flex gap-2 items-end bg-muted rounded-md p-2">
+        <div className="flex gap-3 items-end bg-background-muted border border-border rounded-2xl p-3 shadow-inner transition-all duration-200 focus-within:border-border-strong focus-within:ring-2 focus-within:ring-ring/20">
           <Textarea
             ref={textareaRef}
             value={value}
@@ -58,7 +58,7 @@ export function ChatInput({
             onKeyDown={handleKeyDown}
             placeholder={placeholder}
             disabled={disabled || isStreaming}
-            className="min-h-[44px] max-h-[200px] resize-none border-0 bg-transparent shadow-none focus-visible:ring-0 focus-visible:border-0"
+            className="min-h-[44px] max-h-[200px] resize-none border-0 bg-transparent shadow-none focus-visible:ring-0 focus-visible:border-0 placeholder:italic placeholder:text-muted-foreground/70"
             rows={1}
           />
           {isStreaming ? (
@@ -66,7 +66,7 @@ export function ChatInput({
               onClick={onStop}
               variant="outline"
               size="icon"
-              className="flex-shrink-0 h-10 w-10 rounded-md"
+              className="flex-shrink-0 h-11 w-11 rounded-full transition-all duration-150 hover:scale-105"
             >
               <Square className="h-4 w-4" />
             </Button>
@@ -75,13 +75,13 @@ export function ChatInput({
               onClick={handleSubmit}
               disabled={!value.trim() || disabled}
               size="icon"
-              className="flex-shrink-0 h-10 w-10 rounded-md"
+              className="flex-shrink-0 h-11 w-11 rounded-full transition-all duration-150 hover:scale-105 focus-visible:ring-gold/50"
             >
               <Send className="h-4 w-4" />
             </Button>
           )}
         </div>
-        <p className="text-xs text-muted-foreground text-center mt-2">
+        <p className="text-xs text-muted-foreground text-center mt-3 font-sans">
           Quaestio&apos;s responses are not always perfect. When in doubt consult a human.
         </p>
       </div>

@@ -32,13 +32,13 @@ export function CopyButton({ content, disabled }: CopyButtonProps) {
       size="icon-xs"
       onClick={handleCopy}
       disabled={disabled}
-      className="opacity-0 group-hover:opacity-100 transition-opacity"
+      className="h-7 w-7 rounded-full transition-all duration-150 hover:bg-muted"
       title="Copy response"
     >
       {copied ? (
-        <Check className="w-3.5 h-3.5 text-green-500" />
+        <Check className="w-3.5 h-3.5 text-green-600" />
       ) : (
-        <Copy className="w-3.5 h-3.5" />
+        <Copy className="w-3.5 h-3.5 text-muted-foreground" />
       )}
     </Button>
   );

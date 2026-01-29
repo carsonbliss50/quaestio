@@ -1,29 +1,48 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Crimson_Pro, Geist_Mono } from "next/font/google";
-import localFont from "next/font/local";
+import {
+  Cormorant_Garamond,
+  Cormorant,
+  Source_Serif_4,
+  Inter,
+  JetBrains_Mono,
+} from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/providers/theme-provider";
 import { ConvexClientProvider } from "@/providers/convex-provider";
 import "./globals.css";
 
+const cormorantGaramond = Cormorant_Garamond({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-display",
+  display: "swap",
+});
+
+const cormorant = Cormorant({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-serif",
+  display: "swap",
+});
+
+const sourceSerif4 = Source_Serif_4({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-body",
+  display: "swap",
+});
+
 const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-inter",
+  weight: ["400", "500", "600"],
+  variable: "--font-sans",
+  display: "swap",
 });
 
-const crimsonPro = Crimson_Pro({
+const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
-  variable: "--font-crimson",
-});
-
-const geistMono = Geist_Mono({
-  subsets: ["latin"],
-  variable: "--font-geist-mono",
-});
-
-const stkBureau = localFont({
-  src: "../public/fonts/STK_Bureau_Serif_Regular.ttf",
-  variable: "--font-stk-bureau",
+  weight: ["400"],
+  variable: "--font-mono",
   display: "swap",
 });
 
@@ -50,7 +69,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${inter.variable} ${crimsonPro.variable} ${geistMono.variable} ${stkBureau.variable} antialiased`}
+        className={`${cormorantGaramond.variable} ${cormorant.variable} ${sourceSerif4.variable} ${inter.variable} ${jetbrainsMono.variable} antialiased`}
       >
         <ThemeProvider
           attribute="class"

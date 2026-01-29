@@ -23,8 +23,8 @@ export default function HomePage() {
   // If no session yet, show loading
   if (!sessionId) {
     return (
-      <div className="flex h-screen items-center justify-center">
-        <div className="animate-pulse text-muted-foreground">Loading...</div>
+      <div className="flex h-screen items-center justify-center bg-background">
+        <div className="animate-pulse text-muted-foreground font-body italic">Loading...</div>
       </div>
     );
   }
@@ -32,71 +32,75 @@ export default function HomePage() {
   return (
     <AppLayout activeConversationId={null}>
       <div className="flex flex-col items-center justify-center min-h-full p-8">
-        <div className="max-w-xl text-center space-y-12">
+        <div className="max-w-2xl text-center space-y-16">
           {/* Logo */}
-          <div className="mx-auto animate-fade-in">
+          <div className="mx-auto opacity-0 animate-fade-in">
             <svg
               viewBox="0 0 100 100"
-              className="h-24 w-24 text-primary mx-auto drop-shadow-sm"
-              fill="currentColor"
+              className="h-28 w-28 text-primary mx-auto"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
             >
               <path d="M50 5 L95 30 L95 70 L50 95 L5 70 L5 30 Z" />
               <text
                 x="50"
-                y="60"
+                y="62"
                 textAnchor="middle"
-                fill="white"
-                fontSize="32"
+                fill="currentColor"
+                stroke="none"
+                fontSize="34"
                 fontFamily="serif"
+                fontWeight="600"
               >
                 Q
               </text>
             </svg>
           </div>
 
-          <div className="space-y-2 animate-slide-up">
-            <h1 className="text-3xl md:text-4xl font-display tracking-wide uppercase">
+          <div className="space-y-4 opacity-0 animate-slide-up animation-delay-100">
+            <h1 className="text-4xl md:text-5xl font-display tracking-wider uppercase">
               Quaestio
             </h1>
-            <p className="text-base text-muted-foreground">
+            <p className="text-lg text-foreground-muted font-body italic leading-relaxed max-w-lg mx-auto">
               Traditional Catholic wisdom, grounded in the perennial Magisterium
             </p>
           </div>
 
           {/* Mode selection */}
-          <div className="grid gap-4 sm:grid-cols-2 animate-slide-up" style={{ animationDelay: "0.1s" }}>
+          <div className="grid gap-6 sm:grid-cols-2 opacity-0 animate-slide-up animation-delay-300">
             <button
-              className="group h-auto p-6 flex flex-col items-start text-left gap-3 rounded-md border border-border bg-card hover:bg-muted transition-colors"
+              className="group h-auto p-8 flex flex-col items-start text-left gap-4 rounded-2xl border border-border bg-card hover:shadow-lg hover:border-border-strong hover:-translate-y-1 transition-all duration-200"
               onClick={() => handleNewChat("standard")}
             >
-              <div className="flex items-center gap-3">
-                <div className="p-2 rounded-md bg-muted">
-                  <Book className="h-5 w-5 text-foreground" />
+              <div className="flex items-center gap-4">
+                <div className="p-3 rounded-xl bg-background-muted group-hover:bg-muted transition-colors">
+                  <Book className="h-6 w-6 text-foreground" />
                 </div>
-                <span className="font-semibold">Standard Mode</span>
+                <span className="font-display text-lg font-semibold tracking-wide">Standard Mode</span>
               </div>
-              <p className="text-sm text-muted-foreground leading-relaxed">
+              <p className="text-sm text-muted-foreground leading-relaxed font-body">
                 Traditional Catholic answers from pre-Vatican II sources
               </p>
             </button>
 
             <button
-              className="group h-auto p-6 flex flex-col items-start text-left gap-3 rounded-md border border-border bg-card hover:bg-muted transition-colors"
+              className="group h-auto p-8 flex flex-col items-start text-left gap-4 rounded-2xl border border-border bg-card hover:shadow-lg hover:border-gold/30 hover:-translate-y-1 transition-all duration-200"
               onClick={() => handleNewChat("aquinas")}
             >
-              <div className="flex items-center gap-3">
-                <div className="p-2 rounded-md bg-muted">
-                  <GraduationCap className="h-5 w-5 text-gold" />
+              <div className="flex items-center gap-4">
+                <div className="p-3 rounded-xl bg-gold-subtle group-hover:bg-gold/20 transition-colors">
+                  <GraduationCap className="h-6 w-6 text-gold" />
                 </div>
-                <span className="font-semibold">Aquinas Mode</span>
+                <span className="font-display text-lg font-semibold tracking-wide">Aquinas Mode</span>
               </div>
-              <p className="text-sm text-muted-foreground leading-relaxed">
+              <p className="text-sm text-muted-foreground leading-relaxed font-body">
                 Scholastic disputatio format from the Summa Theologica
               </p>
             </button>
           </div>
 
-          <p className="text-xs text-muted-foreground animate-fade-in" style={{ animationDelay: "0.2s" }}>
+          <p className="text-sm text-muted-foreground font-sans opacity-0 animate-fade-in animation-delay-500">
             For important matters of faith and morals, consult a priest.
           </p>
         </div>

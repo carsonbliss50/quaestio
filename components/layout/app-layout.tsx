@@ -12,18 +12,18 @@ interface AppLayoutProps {
 
 export function AppLayout({ children, activeConversationId }: AppLayoutProps) {
   return (
-    <div className="flex h-screen overflow-hidden">
+    <div className="flex h-screen overflow-hidden bg-background">
       {/* Desktop sidebar */}
-      <aside className="hidden md:flex md:w-72 flex-shrink-0">
+      <aside className="hidden md:flex md:w-72 flex-shrink-0 border-r border-border">
         <Sidebar activeConversationId={activeConversationId} />
       </aside>
 
       {/* Main content */}
       <main className="flex-1 flex flex-col min-w-0">
         {/* Mobile header */}
-        <header className="md:hidden flex items-center gap-2 p-4 border-b border-border">
+        <header className="md:hidden flex items-center gap-3 p-4 border-b border-border bg-background">
           <MobileNav activeConversationId={activeConversationId} />
-          <h1 className="text-lg font-display tracking-wide uppercase">Quaestio</h1>
+          <h1 className="text-xl font-display tracking-wider uppercase">Quaestio</h1>
         </header>
 
         {/* Page content */}

@@ -23,35 +23,35 @@ export function ModeSelector({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="sm" disabled={disabled} className="rounded-md">
+        <Button variant="outline" size="sm" disabled={disabled} className="rounded-xl gap-2">
           {mode === "aquinas" ? (
             <>
-              <GraduationCap className="h-4 w-4 mr-2 text-gold" />
-              Aquinas Mode
+              <GraduationCap className="h-4 w-4 text-gold" />
+              <span className="font-semibold">Aquinas Mode</span>
             </>
           ) : (
             <>
-              <Book className="h-4 w-4 mr-2 text-primary" />
-              Standard Mode
+              <Book className="h-4 w-4 text-foreground" />
+              <span className="font-semibold">Standard Mode</span>
             </>
           )}
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="start">
-        <DropdownMenuItem onClick={() => onModeChange("standard")} className="rounded-md">
-          <Book className="h-4 w-4 mr-2 text-primary" />
+      <DropdownMenuContent align="start" className="w-64">
+        <DropdownMenuItem onClick={() => onModeChange("standard")} className="rounded-lg p-3">
+          <Book className="h-5 w-5 mr-3 text-foreground flex-shrink-0" />
           <div>
-            <div className="font-medium">Standard Mode</div>
-            <div className="text-xs text-muted-foreground">
+            <div className="font-semibold">Standard Mode</div>
+            <div className="text-xs text-muted-foreground mt-0.5">
               Traditional Catholic answers
             </div>
           </div>
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => onModeChange("aquinas")} className="rounded-md">
-          <GraduationCap className="h-4 w-4 mr-2 text-gold" />
+        <DropdownMenuItem onClick={() => onModeChange("aquinas")} className="rounded-lg p-3">
+          <GraduationCap className="h-5 w-5 mr-3 text-gold flex-shrink-0" />
           <div>
-            <div className="font-medium">Aquinas Mode</div>
-            <div className="text-xs text-muted-foreground">
+            <div className="font-semibold">Aquinas Mode</div>
+            <div className="text-xs text-muted-foreground mt-0.5">
               Scholastic disputatio format
             </div>
           </div>

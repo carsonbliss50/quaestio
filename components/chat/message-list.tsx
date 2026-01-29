@@ -35,9 +35,9 @@ export function MessageList({
   if (messages.length === 0 && !isLoading) {
     return (
       <div className="flex-1 flex items-center justify-center p-8">
-        <div className="text-center max-w-md space-y-4">
-          <h2 className="text-3xl font-display tracking-tight">Ask a Question</h2>
-          <p className="text-muted-foreground font-serif italic text-lg">
+        <div className="text-center max-w-lg space-y-6 animate-fade-in">
+          <h2 className="text-4xl font-display tracking-tight">Ask a Question</h2>
+          <p className="text-foreground-muted font-body italic text-lg leading-relaxed">
             Inquire about the Catholic Faith, and I shall answer from traditional sources, grounded in the perennial Magisterium.
           </p>
         </div>
@@ -76,11 +76,12 @@ export function MessageList({
 
         {/* Loading skeleton */}
         {isLoading && !streamingContent && (
-          <div className="flex justify-start">
-            <div className="max-w-[85%] rounded-lg px-4 py-3 bg-card border border-border">
-              <Skeleton className="h-4 w-48 mb-2" />
-              <Skeleton className="h-4 w-64 mb-2" />
-              <Skeleton className="h-4 w-40" />
+          <div className="flex justify-start gap-5 py-6">
+            <div className="flex-shrink-0 w-10 h-10 rounded-full bg-gold/10 border-2 border-gold/30" />
+            <div className="flex-1 border-l-2 border-gold/20 pl-5">
+              <Skeleton className="h-4 w-48 mb-3" />
+              <Skeleton className="h-4 w-72 mb-3" />
+              <Skeleton className="h-4 w-56" />
             </div>
           </div>
         )}
